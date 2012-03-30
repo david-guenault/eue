@@ -14,6 +14,10 @@ Before do |scenario|
     @browser = browser
     @sc = scenario
 end
+
+at_exit do
+    browser.close
+end
  
 # performance data for cucumber-nagios
 After do
@@ -42,7 +46,3 @@ def endmeasure()
     MEASURE["time"]=(MEASURE["end"] - MEASURE["start"]).to_f
 end
  
-# "after all"
-at_exit do
-    browser.close
-end
