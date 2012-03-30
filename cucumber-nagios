@@ -1,0 +1,10 @@
+#!/bin/bash
+MYDISPLAY=$((RANDOM%2000+1000))
+
+Xvfb :$MYDISPLAY -screen 0 1280x800x16 -nolisten tcp &
+export DISPLAY=:$MYDISPLAY
+
+/usr/bin/cucumber_nagios $1
+RET=$?
+exit $RET
+
