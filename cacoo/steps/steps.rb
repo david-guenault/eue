@@ -13,6 +13,10 @@ end
 Quand /^Je clique sur le lien "([^"]*)"$/ do |arg1|
     @browser.link(:text => arg1).click
 end
+
+Quand /^Je clique sur le lien dont l'identifiant est "([^"]*)"$/ do |arg1|
+    @browser.a(:id=>arg1).click
+end
  
 Quand /^Je saisi "([^"]*)" dans le champ "([^"]*)"$/ do |arg1, arg2|
     @browser.text_field(:name => arg2).set(arg1)
