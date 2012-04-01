@@ -18,5 +18,5 @@ Scénario: authentification cacoo
 
 Scénario: Création d'un schéma
   Etant donné Que je suis authentifié sur le service cacoo
-  Quand Je clique sur le lien "Créer un Schéma"
+  Quand Je clique sur le lien dont l'identifiant est "create_new_illust"
   Alors Je devrais voir la fenêtre inspecteur
