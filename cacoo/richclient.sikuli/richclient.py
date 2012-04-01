@@ -1,6 +1,18 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer as Server
 import inspect
+import os
 import sys
+import ConfigParser
+
+# base path
+base_path = os.path.realpath(os.path.dirname(sys.argv[0])+"/../")
+
+# read config
+config = ConfigParser.RawConfigParser()
+config.read(base_path+"/parameters.ini")
+host = config.get("sikuli","xmlrpcHost")
+port = config.getint("sikuli","xmlrpcPort")
+
 # server class
 class SikuliServer(Server):
     # server loop   
@@ -23,6 +35,14 @@ def step_skeleton():
     except:
         #dump_error()        
         return 2
+
+def check_inspecteur():
+    try:
+        wait("ElnspecteurT.png",20)
+        return 0
+    except:
+        #dump_error()        
+        return 2
  
 # exit function
 def ext():
@@ -31,8 +51,9 @@ def ext():
  
 # launch server
 try:
-    srv = SikuliServer(("127.0.0.1", 1337))
+    srv = SikuliServer((host, port))
     srv.register_function(step_skeleton)
+    srv.register_function(check_inspecteur)
     srv.register_function(ext,"quit")    
     srv.serve_forever()
 except:

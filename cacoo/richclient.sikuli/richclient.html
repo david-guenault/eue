@@ -72,7 +72,19 @@
 <pre class="sikuli-code">
 <span class="kw">from</span> SimpleXMLRPCServer <span class="kw">import</span> SimpleXMLRPCServer <span class="kw">as</span> Server
 <span class="kw">import</span> inspect
+<span class="kw">import</span> os
 <span class="kw">import</span> sys
+<span class="kw">import</span> ConfigParser
+
+<span class="cmt"># base path
+</span>base_path = os.path.realpath(os.path.dirname(sys.argv[<span class="dig">0</span>])+<span class="str">"/../"</span>)
+
+<span class="cmt"># read config
+</span>config = ConfigParser.RawConfigParser()
+config.read(base_path+<span class="str">"/parameters.ini"</span>)
+host = config.get(<span class="str">"sikuli"</span>,<span class="str">"xmlrpcHost"</span>)
+port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpcPort"</span>)
+
 <span class="cmt"># server class
 </span><span class="kw">class</span> SikuliServer(Server):
     <span class="cmt"># server loop   
@@ -96,6 +108,14 @@
         <span class="cmt">#dump_error()        
 </span>        <span class="kw">return</span> <span class="dig">2</span>
 
+<span class="kw">def</span> check_inspecteur():
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="ElnspecteurT.png" />,<span class="dig">20</span>)
+        <span class="kw">return</span> <span class="dig">0</span>
+    <span class="kw">except</span>:
+        <span class="cmt">#dump_error()        
+</span>        <span class="kw">return</span> <span class="dig">2</span>
+
 <span class="cmt"># exit function
 </span><span class="kw">def</span> ext():
     srv.quit = True
@@ -103,8 +123,9 @@
 
 <span class="cmt"># launch server
 </span><span class="kw">try</span>:
-    srv = SikuliServer((<span class="str">"127.0.0.1"</span>, <span class="dig">1337</span>))
+    srv = SikuliServer((host, port))
     srv.register_function(step_skeleton)
+    srv.register_function(check_inspecteur)
     srv.register_function(ext,<span class="str">"quit"</span>)
     srv.serve_forever()
 <span class="kw">except</span>:
