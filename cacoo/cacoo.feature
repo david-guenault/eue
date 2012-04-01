@@ -20,3 +20,8 @@ Scénario: Création d'un schéma
   Etant donné Que je suis authentifié sur le service cacoo
   Quand Je clique sur le lien dont l'identifiant est "create_new_illust"
   Alors Je devrais voir la fenêtre inspecteur
+
+Scénario: Fermeture du schéma
+  Etant donné Que je suis sur le nouveau schéma
+  Quand je clique sur le bouton fermer
+  Alors je ne devrais plus voir la fenêtre schéma

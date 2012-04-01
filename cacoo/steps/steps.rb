@@ -33,9 +33,27 @@ Alors /^Je devrais voir "([^"]*)"$/ do |arg1|
 end
 
 Etantdonné /^Que je suis authentifié sur le service cacoo$/ do
-  # contexte déjà vérifié donc pas d'action
+  # contexte déjà vérifié donc pas d'action en dehors de la mesure
+  startmeasure
 end
  
 Alors /^Je devrais voir la fenêtre inspecteur$/ do
   # assertion qui sera vérifiée via sikuli au travers de xmlrpc
+  @Xmlrpc_client.call("check_inspecteur").to_s.should == "0"
+  endmeasure
 end
+
+Etantdonné /^Que je suis sur le nouveau schéma$/ do
+  # contexte déjà vérifié
+  startmeasure
+end
+
+Quand /^je clique sur le bouton fermer$/ do
+  @Xmlrpc_client.call("close_schema").to_s.should == "0"
+end
+
+Alors /^je ne devrais plus voir la fenêtre schéma$/ do
+  @Xmlrpc_client.call("check_schema_closed").to_s.should == "0"
+  endmeasure
+end
+

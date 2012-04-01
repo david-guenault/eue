@@ -39,11 +39,29 @@ def step_skeleton():
 def check_inspecteur():
     try:
         wait("ElnspecteurT.png",20)
+        waitVanish("chargement_en_cours.png",20)
         return 0
     except:
         #dump_error()        
         return 2
- 
+
+def close_schema():
+    try:
+        click(Pattern("weaww2mugEnr.png").targetOffset(180,0))
+        return 0
+    except:
+        #dump_error()        
+        return 2
+
+def check_schema_closed():
+    try:
+        waitVanish("sagIIIEIIIA1.png",20)
+        return 0
+    except:
+        #dump_error()        
+        return 2
+
+
 # exit function
 def ext():
     srv.quit = True
@@ -54,6 +72,8 @@ try:
     srv = SikuliServer((host, port))
     srv.register_function(step_skeleton)
     srv.register_function(check_inspecteur)
+    srv.register_function(close_schema)
+    srv.register_function(check_schema_closed) 
     srv.register_function(ext,"quit")    
     srv.serve_forever()
 except:

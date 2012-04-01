@@ -111,10 +111,28 @@ port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpc
 <span class="kw">def</span> check_inspecteur():
     <span class="kw">try</span>:
         <span class="skw">wait</span>(<img src="ElnspecteurT.png" />,<span class="dig">20</span>)
+        waitVanish(<img src="chargement_en_cours.png" />,<span class="dig">20</span>)
         <span class="kw">return</span> <span class="dig">0</span>
     <span class="kw">except</span>:
         <span class="cmt">#dump_error()        
 </span>        <span class="kw">return</span> <span class="dig">2</span>
+
+<span class="kw">def</span> close_schema():
+    <span class="kw">try</span>:
+        <span class="skw">click</span>(Pattern(<img src="weaww2mugEnr.png" />).targetOffset(<span class="dig">180</span>,<span class="dig">0</span>))
+        <span class="kw">return</span> <span class="dig">0</span>
+    <span class="kw">except</span>:
+        <span class="cmt">#dump_error()        
+</span>        <span class="kw">return</span> <span class="dig">2</span>
+
+<span class="kw">def</span> check_schema_closed():
+    <span class="kw">try</span>:
+        waitVanish(<img src="sagIIIEIIIA1.png" />,<span class="dig">20</span>)
+        <span class="kw">return</span> <span class="dig">0</span>
+    <span class="kw">except</span>:
+        <span class="cmt">#dump_error()        
+</span>        <span class="kw">return</span> <span class="dig">2</span>
+
 
 <span class="cmt"># exit function
 </span><span class="kw">def</span> ext():
@@ -126,6 +144,8 @@ port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpc
     srv = SikuliServer((host, port))
     srv.register_function(step_skeleton)
     srv.register_function(check_inspecteur)
+    srv.register_function(close_schema)
+    srv.register_function(check_schema_closed)
     srv.register_function(ext,<span class="str">"quit"</span>)
     srv.serve_forever()
 <span class="kw">except</span>:
