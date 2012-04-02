@@ -38,7 +38,7 @@ After do
     end
     MEASURE["start"] = 0
     MEASURE["end"] = 0
-    MEASURE["time"] = -1   
+    MEASURE["time"] = -1 
 end
  
 MEASURES = []
