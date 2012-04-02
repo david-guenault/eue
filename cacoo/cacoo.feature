@@ -1,7 +1,11 @@
 # language: fr
-Fonctionnalité: authentification cacoo
-    Afin d'être en mesure d'utiliser cacoo
+Fonctionnalité: cacoo
+    Afin de vérifier que cacoo fonctionne
     je dois pouvoir m'authentifier
+    puis créer un schéma
+    puis le sauvegarder
+    puis le mettre à la corbeille
+    et enfin vider la corbeille
 
 Scénario: Page d'accueil 
     Etant donné Que mon navigateur est lancé
