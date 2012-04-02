@@ -39,7 +39,7 @@ end
  
 Alors /^Je devrais voir la fenêtre inspecteur$/ do
   # assertion qui sera vérifiée via sikuli au travers de xmlrpc
-  @Xmlrpc_client.call("check_inspecteur").to_s.should == "0"
+  @sikuli.call("check_inspecteur").to_s.should == "0"
   endmeasure
 end
 
@@ -48,12 +48,32 @@ Etantdonné /^Que je suis sur le nouveau schéma$/ do
   startmeasure
 end
 
-Quand /^je clique sur le bouton fermer$/ do
-  @Xmlrpc_client.call("close_schema").to_s.should == "0"
+Quand /^Je clique sur le bouton fermer$/ do
+  @sikuli.call("close_schema").to_s.should == "0"
 end
 
-Alors /^je ne devrais plus voir la fenêtre schéma$/ do
-  @Xmlrpc_client.call("check_schema_closed").to_s.should == "0"
+Alors /^Je ne devrais plus voir la fenêtre schéma$/ do
+  @sikuli.call("check_schema_closed").to_s.should == "0"
   endmeasure
+end
+
+Etantdonné /^Que je suis sur la page de gestion du schéma "([^"]*)"$/ do |arg1|
+  # assertion déjà vérifiée
+end
+
+Alors /^Je ne devrais pas voir "([^"]*)"$/ do |arg1|
+      #@browser.text.include?(arg1).should == false
+end
+
+Quand /^Je clique sur le bouton "([^"]*)" du popup javascript$/ do |arg1|
+  @sikuli.call("validate_empty_trash").to_s.should == "0"
+end
+
+Etantdonné /^Que je suis sur la page de détail du schéma "([^"]*)"$/ do |arg1|
+  # assertion vérifiée précédemment
+end
+
+Etantdonné /^Que je suis sur la liste des schémas$/ do
+  # assertion vérifiée précédemment
 end
 
