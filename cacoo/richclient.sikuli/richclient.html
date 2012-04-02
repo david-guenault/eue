@@ -82,8 +82,9 @@
 <span class="cmt"># read config
 </span>config = ConfigParser.RawConfigParser()
 config.read(base_path+<span class="str">"/parameters.ini"</span>)
-host = config.get(<span class="str">"sikuli"</span>,<span class="str">"xmlrpcHost"</span>)
-port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpcPort"</span>)
+host = config.get(<span class="str">"sikuli"</span>,<span class="str">"host"</span>)
+port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"port"</span>)
+timeout = config.getint(<span class="str">"sikuli"</span>,<span class="str">"timeout"</span>)
 
 <span class="cmt"># server class
 </span><span class="kw">class</span> SikuliServer(Server):
@@ -92,6 +93,8 @@ port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpc
         self.quit = <span class="dig">0</span>
         <span class="kw">while</span> <span class="kw">not</span> self.quit:
             self.handle_request()
+        <span class="kw">print</span> <span class="str">"request to exit"</span>
+        sys.exit(<span class="dig">0</span>)
 
 <span class="kw">def</span> dump_error():
     <span class="kw">print</span> inspect.stack()
@@ -102,23 +105,29 @@ port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpc
 <span class="cmt"># scenario steps
 </span><span class="kw">def</span> step_skeleton():
     <span class="kw">try</span>:
-        result = <span class="skw">wait</span>(<img src="lnspecteurET.png" />,<span class="dig">20</span>)
+        result = <span class="skw">wait</span>(<img src="lnspecteurET.png" />,timeout)
         <span class="kw">return</span> <span class="dig">0</span>
     <span class="kw">except</span>:
         <span class="cmt">#dump_error()        
 </span>        <span class="kw">return</span> <span class="dig">2</span>
 
 <span class="kw">def</span> check_inspecteur():
+    <span class="kw">print</span> <span class="str">"check_inspecteur"</span>
     <span class="kw">try</span>:
-        <span class="skw">wait</span>(<img src="ElnspecteurT.png" />,<span class="dig">20</span>)
-        waitVanish(<img src="chargement_en_cours.png" />,<span class="dig">20</span>)
+        <span class="skw">wait</span>(<img src="ElnspecteurT.png" />,timeout)
+        waitVanish(<img src="chargement_en_cours.png" />,timeout)
         <span class="kw">return</span> <span class="dig">0</span>
     <span class="kw">except</span>:
         <span class="cmt">#dump_error()        
 </span>        <span class="kw">return</span> <span class="dig">2</span>
 
 <span class="kw">def</span> close_schema():
+    <span class="kw">print</span> <span class="str">"close_schema"</span>
     <span class="kw">try</span>:
+        <span class="skw">click</span>(<img src="Enregisireme.png" />)
+        <span class="skw">wait</span>(<img src="1333281993500.png" />,timeout)
+        <span class="skw">click</span>(Pattern(<img src="1333281993500.png" />).targetOffset(<span class="dig">33</span>,<span class="dig">7</span>))
+        <span class="skw">wait</span>(<img src="HLESmmgLschm.png" />,timeout)
         <span class="skw">click</span>(Pattern(<img src="weaww2mugEnr.png" />).targetOffset(<span class="dig">180</span>,<span class="dig">0</span>))
         <span class="kw">return</span> <span class="dig">0</span>
     <span class="kw">except</span>:
@@ -126,16 +135,27 @@ port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpc
 </span>        <span class="kw">return</span> <span class="dig">2</span>
 
 <span class="kw">def</span> check_schema_closed():
+    <span class="kw">print</span> <span class="str">"check_schema_closed"</span>
     <span class="kw">try</span>:
-        waitVanish(<img src="sagIIIEIIIA1.png" />,<span class="dig">20</span>)
+        waitVanish(<img src="sagIIIEIIIA1.png" />,timeout)
         <span class="kw">return</span> <span class="dig">0</span>
     <span class="kw">except</span>:
         <span class="cmt">#dump_error()        
 </span>        <span class="kw">return</span> <span class="dig">2</span>
 
+<span class="kw">def</span> validate_empty_trash():
+    <span class="kw">print</span> <span class="str">"validate_empty_trash"</span>
+    <span class="kw">try</span>:
+        <span class="skw">wait</span>(<img src="1333281566104.png" />,timeout)
+        <span class="skw">click</span>(<img src="1333281566104.png" />)
+        <span class="kw">return</span> <span class="dig">0</span>
+    <span class="kw">except</span>:
+        <span class="cmt">#dump_error()        
+</span>        <span class="kw">return</span> <span class="dig">2</span>
 
 <span class="cmt"># exit function
 </span><span class="kw">def</span> ext():
+    <span class="kw">print</span> <span class="str">"exit"</span>
     srv.quit = True
     <span class="kw">return</span> <span class="dig">0</span>
 
@@ -146,11 +166,13 @@ port = config.getint(<span class="str">"sikuli"</span>,<span class="str">"xmlrpc
     srv.register_function(check_inspecteur)
     srv.register_function(close_schema)
     srv.register_function(check_schema_closed)
+    srv.register_function(validate_empty_trash)
     srv.register_function(ext,<span class="str">"quit"</span>)
     srv.serve_forever()
 <span class="kw">except</span>:
     dump_error()
     sys.exit(<span class="dig">1</span>)
+sys.exit(<span class="dig">0</span>)
 </pre>
 </body>
 </html>

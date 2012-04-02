@@ -10,8 +10,9 @@ base_path = os.path.realpath(os.path.dirname(sys.argv[0])+"/../")
 # read config
 config = ConfigParser.RawConfigParser()
 config.read(base_path+"/parameters.ini")
-host = config.get("sikuli","xmlrpcHost")
-port = config.getint("sikuli","xmlrpcPort")
+host = config.get("sikuli","host")
+port = config.getint("sikuli","port")
+timeout = config.getint("sikuli","timeout") 
 
 # server class
 class SikuliServer(Server):
@@ -20,6 +21,8 @@ class SikuliServer(Server):
         self.quit = 0
         while not self.quit:
             self.handle_request()
+        print "request to exit" 
+        sys.exit(0)
  
 def dump_error():
     print inspect.stack()
@@ -30,23 +33,29 @@ def dump_error():
 # scenario steps
 def step_skeleton():
     try:
-        result = wait("lnspecteurET.png",20)
+        result = wait("lnspecteurET.png",timeout)
         return 0
     except:
         #dump_error()        
         return 2
 
 def check_inspecteur():
+    print "check_inspecteur" 
     try:
-        wait("ElnspecteurT.png",20)
-        waitVanish("chargement_en_cours.png",20)
+        wait("ElnspecteurT.png",timeout)
+        waitVanish("chargement_en_cours.png",timeout)
         return 0
     except:
         #dump_error()        
         return 2
 
 def close_schema():
+    print "close_schema"     
     try:
+        click("Enregisireme.png")
+        wait("1333281993500.png",timeout)
+        click(Pattern("1333281993500.png").targetOffset(33,7))
+        wait("HLESmmgLschm.png",timeout)
         click(Pattern("weaww2mugEnr.png").targetOffset(180,0))
         return 0
     except:
@@ -54,16 +63,27 @@ def close_schema():
         return 2
 
 def check_schema_closed():
+    print "check_schema_closed"     
     try:
-        waitVanish("sagIIIEIIIA1.png",20)
+        waitVanish("sagIIIEIIIA1.png",timeout)
         return 0
     except:
         #dump_error()        
         return 2
 
+def validate_empty_trash():
+    print "validate_empty_trash"
+    try:
+        wait("1333281566104.png",timeout)
+        click("1333281566104.png")
+        return 0
+    except:
+        #dump_error()        
+        return 2
 
 # exit function
 def ext():
+    print "exit"
     srv.quit = True
     return 0
  
@@ -74,8 +94,10 @@ try:
     srv.register_function(check_inspecteur)
     srv.register_function(close_schema)
     srv.register_function(check_schema_closed) 
+    srv.register_function(validate_empty_trash)
     srv.register_function(ext,"quit")    
     srv.serve_forever()
 except:
     dump_error()
     sys.exit(1)
+sys.exit(0)
